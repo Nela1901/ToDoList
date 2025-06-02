@@ -8,7 +8,7 @@ También gestiona usuarios, etiquetas y recordatorios.
 - Creación, edición y eliminación de tareas.
 - Gestión de usuarios y etiquetas para personalizar las tareas.
 - Recordatorios asociados a tareas para mejorar la productividad.
-- Base de datos local ('tasks.db') para almacenar la información de forma segura.
+- Base de datos local (`tasks.db`) para almacenar la información de forma segura.
 
 Este proyecto refleja las buenas prácticas de programación y busca ser una herramienta intuitiva 
 y útil para el manejo eficiente de actividades.
@@ -19,7 +19,7 @@ y útil para el manejo eficiente de actividades.
 - Entorno virtual (recomendado).
 - Paquetes necesarios:
   - SQLAlchemy
-  - sqlite3 (base de datos incluida en Python)
+  - DB Browser para SQLite
   - Otros paquetes especificados en `requirements.txt`.
 
 ## Instalación
