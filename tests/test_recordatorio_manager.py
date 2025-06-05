@@ -15,6 +15,7 @@ from src.logica.tarea_manager import TareaManager
 
 class TestRecordatorioManager(unittest.TestCase):
     # pylint: disable=invalid-name, unused-variable, no-member, too-many-instance-attributes, too-many-function-args
+
     """
     Conjunto de pruebas unitarias para la clase RecordatorioManager.
 
