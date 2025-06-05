@@ -1,8 +1,31 @@
+"""
+Módulo para inicializar la tabla de tareas en la base de datos del sistema ToDoList.
+
+Contiene una función que elimina las tareas existentes y crea tareas iniciales
+con datos de ejemplo para facilitar pruebas y desarrollo.
+
+Funciones:
+    inicializar_tareas(): Borra registros existentes e inserta tareas predeterminadas.
+"""
+
 from src.modelo.database import Session
 from src.modelo.modelo import Tarea
 from datetime import datetime
 
 def inicializar_tareas():
+    """
+    Inicializa la tabla `tarea` con registros predeterminados.
+
+    Pasos realizados:
+        1. Elimina todos los registros existentes para evitar duplicados.
+        2. Inserta tareas con atributos como título, descripción, fechas,
+           estado y usuario asociado.
+        3. Confirma los cambios y cierra la sesión de la base de datos.
+        4. Imprime un mensaje de confirmación.
+
+    Raises:
+        SQLAlchemyError: Si ocurre un error en la operación con la base de datos.
+    """
     session = Session()
 
     # Eliminar todos los registros existentes

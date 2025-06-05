@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35420572-641f-460f-b69b-b6db6b8059db" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modelo/modelo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/modelo/modelo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks.db" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +33,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Nela1901/ToDoListPCS.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/Nela1901/ToDoList.git&quot;,
     &quot;accountId&quot;: &quot;fec0dbf6-494b-44bc-b01c-d5ade0297f85&quot;
   }
 }</component>
@@ -45,43 +46,66 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests in test_estado_manager.py.executor": "Run",
-    "Python tests.Python tests in test_etiqueta_manager.py.executor": "Run",
-    "Python tests.Python tests in test_recordatorio_manager.py.executor": "Run",
-    "Python tests.Python tests in test_tarea_manager.py.executor": "Run",
-    "Python tests.Python tests in test_usuario_manager.py.executor": "Run",
-    "Python.database (1).executor": "Run",
-    "Python.database.executor": "Run",
-    "Python.declarative_base.executor": "Run",
-    "Python.estado_manager.executor": "Run",
-    "Python.etiqueta_manager.executor": "Run",
-    "Python.gui.executor": "Run",
-    "Python.inicializador_estado_datos (1).executor": "Run",
-    "Python.inicializador_estado_datos.executor": "Run",
-    "Python.inicializador_etiqueta.executor": "Run",
-    "Python.inicializador_recordatorio.executor": "Run",
-    "Python.inicializar_tareas.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.modelo.executor": "Run",
-    "Python.recordatorio_manager.executor": "Run",
-    "Python.tarea_manager.executor": "Run",
-    "Python.usuario_manager.executor": "Run",
-    "Python.utilidades_usuarios.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "settings.editor.splitter.proportion": "0.2669039"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests in test_estado_manager.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_etiqueta_manager.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_recordatorio_manager.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_tarea_manager.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_usuario_manager.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.database (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.database.executor&quot;: &quot;Run&quot;,
+    &quot;Python.declarative_base.executor&quot;: &quot;Run&quot;,
+    &quot;Python.estado_manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.etiqueta_manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.inicializador_estado_datos (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.inicializador_estado_datos.executor&quot;: &quot;Run&quot;,
+    &quot;Python.inicializador_etiqueta.executor&quot;: &quot;Run&quot;,
+    &quot;Python.inicializador_recordatorio.executor&quot;: &quot;Run&quot;,
+    &quot;Python.inicializar_tareas.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.modelo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.recordatorio_manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.tarea_manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.usuario_manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.utilidades_usuarios.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.2669039&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\TODOLIST\ToDoList" />
       <recent name="D:\TODOLIST\ToDoList\src\modelo" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.database">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ToDoList" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="database" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ToDoList" />
       <option name="ENV_FILES" value="" />
@@ -192,35 +216,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="utilidades_usuarios" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ToDoList" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/utilidades" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/utilidades/utilidades_usuarios.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.database" />
+        <item itemvalue="Python.app" />
         <item itemvalue="Python.inicializador_etiqueta" />
         <item itemvalue="Python.inicializador_recordatorio" />
         <item itemvalue="Python.inicializar_tareas" />
-        <item itemvalue="Python.utilidades_usuarios" />
       </list>
     </recent_temporary>
   </component>

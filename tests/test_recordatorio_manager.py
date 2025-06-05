@@ -1,4 +1,9 @@
-# tests/test_recordatorio_manager.py
+"""
+Pruebas unitarias para la clase RecordatorioManager del sistema ToDoList.
+
+Este módulo verifica la correcta creación, obtención, actualización y eliminación
+de recordatorios asociados a tareas.
+"""
 
 import unittest
 from datetime import datetime, timedelta
@@ -9,13 +14,29 @@ from src.logica.estado_manager import EstadoManager
 from src.logica.tarea_manager import TareaManager
 
 class TestRecordatorioManager(unittest.TestCase):
+    """
+    Conjunto de pruebas unitarias para la clase RecordatorioManager.
+
+    Métodos:
+        setUp: Inicializa la base de datos, sesión y crea datos relacionados.
+        tearDown: Revierte y cierra la sesión tras cada prueba.
+        test_crear_recordatorio: Verifica la creación correcta de un recordatorio.
+        test_obtener_recordatorio: Verifica la obtención correcta de un recordatorio por ID.
+        test_actualizar_recordatorio: Verifica la actualización correcta de un recordatorio.
+        test_eliminar_recordatorio: Verifica la eliminación correcta de un recordatorio.
+    """
+
     def setUp(self):
+        """
+        Configura la base de datos limpia y prepara la sesión y los managers,
+        creando un usuario, estado y tarea para asociar los recordatorios.
+        """
         Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
         self.session = Session()
         self.recordatorio_manager = RecordatorioManager(self.session)
 
-        # Crear datos relacionados
+        # Crear datos relacionados necesarios
         self.usuario_manager = UsuarioManager(self.session)
         self.estado_manager = EstadoManager(self.session)
         self.tarea_manager = TareaManager(self.session)
@@ -32,10 +53,16 @@ class TestRecordatorioManager(unittest.TestCase):
         )
 
     def tearDown(self):
+        """
+        Revierte cualquier cambio y cierra la sesión después de cada prueba.
+        """
         self.session.rollback()
         self.session.close()
 
     def test_crear_recordatorio(self):
+        """
+        Prueba que se cree un recordatorio con los datos correctos.
+        """
         recordatorio = self.recordatorio_manager.crear_recordatorio(
             self.tarea.id_tarea,
             datetime.now() + timedelta(hours=2),
@@ -46,6 +73,9 @@ class TestRecordatorioManager(unittest.TestCase):
         self.assertEqual(recordatorio.tipo, "Notificación")
 
     def test_obtener_recordatorio(self):
+        """
+        Prueba la obtención correcta de un recordatorio por su ID.
+        """
         recordatorio = self.recordatorio_manager.crear_recordatorio(
             self.tarea.id_tarea,
             datetime.now() + timedelta(hours=2),
@@ -55,6 +85,9 @@ class TestRecordatorioManager(unittest.TestCase):
         self.assertEqual(recordatorio_leido.tipo, "Alarma")
 
     def test_actualizar_recordatorio(self):
+        """
+        Prueba la actualización del tipo de un recordatorio existente.
+        """
         recordatorio = self.recordatorio_manager.crear_recordatorio(
             self.tarea.id_tarea,
             datetime.now() + timedelta(hours=2),
@@ -68,6 +101,9 @@ class TestRecordatorioManager(unittest.TestCase):
         self.assertEqual(recordatorio_actualizado.tipo, nuevo_tipo)
 
     def test_eliminar_recordatorio(self):
+        """
+        Prueba la eliminación correcta de un recordatorio.
+        """
         recordatorio = self.recordatorio_manager.crear_recordatorio(
             self.tarea.id_tarea,
             datetime.now() + timedelta(hours=2),

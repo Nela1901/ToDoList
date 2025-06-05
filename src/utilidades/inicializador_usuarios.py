@@ -1,9 +1,29 @@
-# utilidades/usuarios_utils.py
+"""
+Módulo de utilidades para la gestión inicial y limpieza de usuarios en el sistema ToDoList.
+
+Contiene funciones para inicializar usuarios sin duplicados y eliminar usuarios
+duplicados basados en el correo electrónico.
+
+Funciones:
+    inicializar_usuarios(): Crea o actualiza usuarios predeterminados sin duplicados.
+    limpiar_usuarios_duplicados(): Elimina usuarios duplicados dejando uno por correo electrónico.
+"""
 
 from src.modelo.database import Session
 from src.modelo.modelo import Usuario
 
 def inicializar_usuarios():
+    """
+    Inicializa la tabla de usuarios con un conjunto predeterminado de usuarios.
+
+    Si un usuario con el mismo correo electrónico ya existe, actualiza su nombre
+    y contraseña. Si no existe, crea un nuevo registro.
+
+    La función evita duplicados en base al correo electrónico.
+
+    Después de insertar o actualizar, confirma los cambios y cierra la sesión.
+    Imprime un mensaje de éxito al finalizar.
+    """
     session = Session()
 
     usuarios_iniciales = [
@@ -26,6 +46,15 @@ def inicializar_usuarios():
     print("Usuarios inicializados sin duplicados.")
 
 def limpiar_usuarios_duplicados():
+    """
+    Elimina usuarios duplicados en la tabla `usuario` basándose en el correo electrónico.
+
+    Mantiene solo el primer registro encontrado por correo electrónico y elimina
+    los duplicados posteriores.
+
+    Después de la eliminación, confirma los cambios y cierra la sesión.
+    Imprime un mensaje de éxito al finalizar.
+    """
     session = Session()
 
     usuarios = session.query(Usuario).order_by(Usuario.id_usuario).all()

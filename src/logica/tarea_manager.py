@@ -1,12 +1,45 @@
-# src/logica/tarea_manager.py
+"""
+Módulo para la gestión de tareas en el sistema ToDoList.
 
+Contiene la clase TareaManager, que ofrece métodos para crear, obtener,
+actualizar y eliminar tareas. Además, permite relacionar tareas con usuarios,
+estados y etiquetas.
+
+Clases:
+    TareaManager: Proporciona métodos CRUD para la entidad Tarea.
+"""
+
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from src.modelo.modelo import Tarea
 
 class TareaManager:
+    """Gestiona las operaciones CRUD para la entidad Tarea."""
+
     def __init__(self, session):
+        """
+        Inicializa el administrador de tareas con una sesión de base de datos.
+
+        Args:
+            session (Session): Sesión activa de SQLAlchemy para interactuar con la base de datos.
+        """
         self.session = session
 
     def crear_tarea(self, titulo, descripcion, fecha_creacion, fecha_vencimiento, id_usuario, id_estado):
+        """
+        Crea una nueva tarea con los detalles proporcionados.
+
+        Args:
+            titulo (str): Título de la tarea.
+            descripcion (str): Descripción detallada de la tarea.
+            fecha_creacion (datetime): Fecha y hora de creación de la tarea.
+            fecha_vencimiento (datetime): Fecha y hora límite para completar la tarea.
+            id_usuario (int): ID del usuario asociado a la tarea.
+            id_estado (int): ID del estado actual de la tarea.
+
+        Returns:
+            Tarea: Instancia creada de Tarea si se guarda correctamente.
+            None: Si ocurre un error de duplicidad o excepción en la base de datos.
+        """
         tarea = Tarea(
             titulo=titulo,
             descripcion=descripcion,
@@ -15,33 +48,99 @@ class TareaManager:
             id_usuario=id_usuario,
             id_estado=id_estado
         )
-        self.session.add(tarea)
-        self.session.commit()
-        return tarea
+        try:
+            self.session.add(tarea)
+            self.session.commit()
+            return tarea
+        except IntegrityError:
+            self.session.rollback()
+            print("Error: Datos duplicados o inválidos al crear tarea.")
+            return None
+        except SQLAlchemyError as e:
+            self.session.rollback()
+            print(f"Error inesperado al crear tarea: {e}")
+            return None
 
     def obtener_tareas(self):
+        """
+        Obtiene todas las tareas almacenadas en la base de datos.
+
+        Returns:
+            list[Tarea]: Lista con todas las instancias de Tarea.
+        """
         return self.session.query(Tarea).all()
 
     def obtener_tarea_por_id(self, id_tarea):
+        """
+        Obtiene una tarea específica por su ID.
+
+        Args:
+            id_tarea (int): Identificador único de la tarea.
+
+        Returns:
+            Tarea: Instancia de Tarea si se encuentra, de lo contrario None.
+        """
         return self.session.query(Tarea).filter_by(id_tarea=id_tarea).first()
 
     def actualizar_tarea(self, id_tarea, titulo=None, descripcion=None, fecha_vencimiento=None, id_estado=None):
+        """
+        Actualiza los atributos de una tarea dada.
+
+        Args:
+            id_tarea (int): ID de la tarea a actualizar.
+            titulo (str, optional): Nuevo título de la tarea.
+            descripcion (str, optional): Nueva descripción de la tarea.
+            fecha_vencimiento (datetime, optional): Nueva fecha límite para la tarea.
+            id_estado (int, optional): Nuevo estado de la tarea.
+
+        Returns:
+            Tarea: Instancia actualizada si la operación fue exitosa.
+            None: Si la tarea no se encuentra o ocurre un error.
+        """
         tarea = self.obtener_tarea_por_id(id_tarea)
-        if tarea:
-            if titulo:
-                tarea.titulo = titulo
-            if descripcion:
-                tarea.descripcion = descripcion
-            if fecha_vencimiento:
-                tarea.fecha_vencimiento = fecha_vencimiento
-            if id_estado:
-                tarea.id_estado = id_estado
+        if not tarea:
+            print("Tarea no encontrada para actualizar.")
+            return None
+        if titulo:
+            tarea.titulo = titulo
+        if descripcion:
+            tarea.descripcion = descripcion
+        if fecha_vencimiento:
+            tarea.fecha_vencimiento = fecha_vencimiento
+        if id_estado:
+            tarea.id_estado = id_estado
+        try:
             self.session.commit()
-        return tarea
+            return tarea
+        except IntegrityError:
+            self.session.rollback()
+            print("Error: Datos duplicados o inválidos al actualizar tarea.")
+            return None
+        except SQLAlchemyError as e:
+            self.session.rollback()
+            print(f"Error inesperado al actualizar tarea: {e}")
+            return None
 
     def eliminar_tarea(self, id_tarea):
+        """
+        Elimina una tarea por su ID.
+
+        Args:
+            id_tarea (int): ID de la tarea a eliminar.
+
+        Returns:
+            Tarea: Instancia eliminada si la operación fue exitosa.
+            None: Si la tarea no existe o ocurre un error.
+        """
         tarea = self.obtener_tarea_por_id(id_tarea)
-        if tarea:
+        if not tarea:
+            print("Tarea no encontrada para eliminar.")
+            return None
+        try:
             self.session.delete(tarea)
             self.session.commit()
-        return tarea
+            return tarea
+        except SQLAlchemyError as e:
+            self.session.rollback()
+            print(f"Error inesperado al eliminar tarea: {e}")
+            return None
