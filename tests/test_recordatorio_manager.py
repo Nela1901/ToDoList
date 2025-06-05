@@ -14,6 +14,7 @@ from src.logica.estado_manager import EstadoManager
 from src.logica.tarea_manager import TareaManager
 
 class TestRecordatorioManager(unittest.TestCase):
+    # pylint: disable=invalid-name, unused-variable, no-member, too-many-instance-attributes, too-many-function-args
     """
     Conjunto de pruebas unitarias para la clase RecordatorioManager.
 
@@ -31,26 +32,30 @@ class TestRecordatorioManager(unittest.TestCase):
         Configura la base de datos limpia y prepara la sesión y los managers,
         creando un usuario, estado y tarea para asociar los recordatorios.
         """
-        Base.metadata.drop_all(engine)
-        Base.metadata.create_all(engine)
-        self.session = Session()
-        self.recordatorio_manager = RecordatorioManager(self.session)
 
-        # Crear datos relacionados necesarios
-        self.usuario_manager = UsuarioManager(self.session)
-        self.estado_manager = EstadoManager(self.session)
-        self.tarea_manager = TareaManager(self.session)
+        def setUp(self):
+            Base.metadata.drop_all(engine)
+            Base.metadata.create_all(engine)
+            self.session = Session()
+            self.recordatorio_manager = RecordatorioManager(self.session)
+            self.usuario_manager = UsuarioManager(self.session)
+            self.estado_manager = EstadoManager(self.session)
+            self.tarea_manager = TareaManager(self.session)
 
-        self.usuario = self.usuario_manager.crear_usuario("Usuario recordatorio", "recordatorio@correo.com", "123")
-        self.estado = self.estado_manager.crear_estado("Pendiente", "Tarea pendiente")
-        self.tarea = self.tarea_manager.crear_tarea(
-            "Tarea con recordatorio",
-            "Descripción",
-            datetime.now(),
-            datetime.now() + timedelta(days=1),
-            self.usuario.id_usuario,
-            self.estado.id_estado
-        )
+            usuario = self.usuario_manager.crear_usuario(
+                "Usuario recordatorio", "recordatorio@correo.com", "123"
+            )
+            estado = self.estado_manager.crear_estado(
+                "Pendiente", "Tarea pendiente"
+            )
+            self.tarea = self.tarea_manager.crear_tarea(
+                "Tarea con recordatorio",
+                "Descripción",
+                datetime.now(),
+                datetime.now() + timedelta(days=1),
+                usuario.id_usuario,
+                estado.id_estado
+            )
 
     def tearDown(self):
         """
@@ -81,7 +86,8 @@ class TestRecordatorioManager(unittest.TestCase):
             datetime.now() + timedelta(hours=2),
             "Alarma"
         )
-        recordatorio_leido = self.recordatorio_manager.obtener_recordatorio_por_id(recordatorio.id_recordatorio)
+        recordatorio_leido = self.recordatorio_manager.obtener_recordatorio_por_id(
+            recordatorio.id_recordatorio)
         self.assertEqual(recordatorio_leido.tipo, "Alarma")
 
     def test_actualizar_recordatorio(self):
@@ -109,8 +115,11 @@ class TestRecordatorioManager(unittest.TestCase):
             datetime.now() + timedelta(hours=2),
             "Para eliminar"
         )
-        eliminado = self.recordatorio_manager.eliminar_recordatorio(recordatorio.id_recordatorio)
-        self.assertIsNone(self.recordatorio_manager.obtener_recordatorio_por_id(eliminado.id_recordatorio))
+        eliminado = self.recordatorio_manager.eliminar_recordatorio(
+            recordatorio.id_recordatorio)
+        self.assertIsNone(
+            self.recordatorio_manager.obtener_recordatorio_por_id(eliminado.id_recordatorio)
+        )
 
 if __name__ == "__main__":
     unittest.main()

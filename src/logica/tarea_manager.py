@@ -24,7 +24,7 @@ class TareaManager:
         """
         self.session = session
 
-    def crear_tarea(self, titulo, descripcion, fecha_creacion, fecha_vencimiento, id_usuario, id_estado):
+    def crear_tarea(self, titulo, descripcion, fecha_creacion, fecha_vencimiento, **kwargs):
         """
         Crea una nueva tarea con los detalles proporcionados.
 
@@ -33,8 +33,7 @@ class TareaManager:
             descripcion (str): Descripción detallada de la tarea.
             fecha_creacion (datetime): Fecha y hora de creación de la tarea.
             fecha_vencimiento (datetime): Fecha y hora límite para completar la tarea.
-            id_usuario (int): ID del usuario asociado a la tarea.
-            id_estado (int): ID del estado actual de la tarea.
+            **kwargs: Otros atributos como id_usuario, id_estado, etc.
 
         Returns:
             Tarea: Instancia creada de Tarea si se guarda correctamente.
@@ -45,8 +44,7 @@ class TareaManager:
             descripcion=descripcion,
             fecha_creacion=fecha_creacion,
             fecha_vencimiento=fecha_vencimiento,
-            id_usuario=id_usuario,
-            id_estado=id_estado
+            **kwargs
         )
         try:
             self.session.add(tarea)
@@ -54,11 +52,16 @@ class TareaManager:
             return tarea
         except IntegrityError:
             self.session.rollback()
-            print("Error: Datos duplicados o inválidos al crear tarea.")
+            print(
+                "Error: Datos duplicados o inválidos "
+                "al crear tarea."
+            )
             return None
         except SQLAlchemyError as e:
             self.session.rollback()
-            print(f"Error inesperado al crear tarea: {e}")
+            print(
+                f"Error inesperado al crear tarea: {e}"
+            )
             return None
 
     def obtener_tareas(self):
@@ -82,16 +85,15 @@ class TareaManager:
         """
         return self.session.query(Tarea).filter_by(id_tarea=id_tarea).first()
 
-    def actualizar_tarea(self, id_tarea, titulo=None, descripcion=None, fecha_vencimiento=None, id_estado=None):
+    def actualizar_tarea(self, id_tarea, **kwargs):
         """
         Actualiza los atributos de una tarea dada.
 
         Args:
             id_tarea (int): ID de la tarea a actualizar.
-            titulo (str, optional): Nuevo título de la tarea.
-            descripcion (str, optional): Nueva descripción de la tarea.
-            fecha_vencimiento (datetime, optional): Nueva fecha límite para la tarea.
-            id_estado (int, optional): Nuevo estado de la tarea.
+            **kwargs: Campos y valores a actualizar (
+            titulo, descripcion, fecha_vencimiento, id_estado
+            ).
 
         Returns:
             Tarea: Instancia actualizada si la operación fue exitosa.
@@ -99,26 +101,29 @@ class TareaManager:
         """
         tarea = self.obtener_tarea_por_id(id_tarea)
         if not tarea:
-            print("Tarea no encontrada para actualizar.")
+            print(
+                "Tarea no encontrada para actualizar."
+            )
             return None
-        if titulo:
-            tarea.titulo = titulo
-        if descripcion:
-            tarea.descripcion = descripcion
-        if fecha_vencimiento:
-            tarea.fecha_vencimiento = fecha_vencimiento
-        if id_estado:
-            tarea.id_estado = id_estado
+
+        for attr, value in kwargs.items():
+            setattr(tarea, attr, value)
+
         try:
             self.session.commit()
             return tarea
         except IntegrityError:
             self.session.rollback()
-            print("Error: Datos duplicados o inválidos al actualizar tarea.")
+            print(
+                "Error: Datos duplicados o inválidos "
+                "al actualizar tarea."
+            )
             return None
         except SQLAlchemyError as e:
             self.session.rollback()
-            print(f"Error inesperado al actualizar tarea: {e}")
+            print(
+                f"Error inesperado al actualizar tarea: {e}"
+            )
             return None
 
     def eliminar_tarea(self, id_tarea):
@@ -134,7 +139,9 @@ class TareaManager:
         """
         tarea = self.obtener_tarea_por_id(id_tarea)
         if not tarea:
-            print("Tarea no encontrada para eliminar.")
+            print(
+                "Tarea no encontrada para eliminar."
+            )
             return None
         try:
             self.session.delete(tarea)
@@ -142,5 +149,7 @@ class TareaManager:
             return tarea
         except SQLAlchemyError as e:
             self.session.rollback()
-            print(f"Error inesperado al eliminar tarea: {e}")
+            print(
+                f"Error inesperado al eliminar tarea: {e}"
+            )
             return None

@@ -7,10 +7,10 @@ un conjunto inicial de recordatorios con fechas y tareas asociadas.
 Funciones:
     inicializar_recordatorios(): Borra los registros actuales y crea recordatorios iniciales.
 """
-
+from datetime import datetime
 from src.modelo.database import Session
 from src.modelo.modelo import Recordatorio
-from datetime import datetime
+
 
 def inicializar_recordatorios():
     """

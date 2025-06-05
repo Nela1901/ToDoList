@@ -3,16 +3,20 @@ Modelo de datos para el sistema de gestión de tareas (ToDoList).
 
 Define las entidades principales del sistema utilizando SQLAlchemy:
 - Usuario: Representa a los usuarios del sistema.
-- Estado: Representa los estados que pueden tener las tareas (por ejemplo, Pendiente, Completado).
+- Estado: Representa los estados que pueden tener las tareas (por ejemplo, Pendiente,
+Completado).
 - Etiqueta: Permite categorizar tareas con etiquetas y colores personalizados.
 - Tarea: Contiene información sobre las tareas, su estado y usuario asociado.
 - Recordatorio: Almacena recordatorios vinculados a tareas.
-- Tabla intermedia tarea_etiqueta: Permite la relación muchos a muchos entre Tareas y Etiquetas.
+- Tabla intermedia tarea_etiqueta: Permite la relación muchos a muchos entre Tareas
+y Etiquetas.
 
-Las relaciones están definidas mediante SQLAlchemy ORM, facilitando la gestión de la base de datos.
+Las relaciones están definidas mediante SQLAlchemy ORM, facilitando la gestión de
+la base de datos.
 
 Atributos del módulo:
-    tarea_etiqueta (Table): Tabla intermedia para la relación muchos a muchos entre Tarea y Etiqueta.
+    tarea_etiqueta (Table): Tabla intermedia para la relación muchos a muchos entre
+    Tarea y Etiqueta.
 
 Clases:
     Usuario: Representa a un usuario del sistema.
@@ -30,10 +34,14 @@ from src.modelo.declarative_base import Base
 # Tabla intermedia para la relación muchos a muchos entre Tarea y Etiqueta
 tarea_etiqueta = Table(
     'tarea_etiqueta', Base.metadata,
-    Column('id_tarea', Integer, ForeignKey('tarea.id_tarea'), primary_key=True),
-    Column('id_etiqueta', Integer, ForeignKey('etiqueta.id_etiqueta'), primary_key=True)
+    Column(
+        'id_tarea', Integer, ForeignKey('tarea.id_tarea'), primary_key=True
+    ),
+    Column(
+        'id_etiqueta', Integer, ForeignKey('etiqueta.id_etiqueta'), primary_key=True
+    )
 )
-
+# pylint: disable=too-few-public-methods
 class Usuario(Base):
     """
         Representa a un usuario en el sistema.
@@ -53,10 +61,11 @@ class Usuario(Base):
     contrasena = Column(String(255), nullable=False)
 
     tareas = relationship("Tarea", back_populates="usuario")
-
+# pylint: disable=too-few-public-methods
 class Estado(Base):
     """
-        Representa un estado posible que puede tener una tarea (por ejemplo, Pendiente, Completado).
+        Representa un estado posible que puede tener una tarea (por ejemplo, Pendiente,
+        Completado).
 
         Atributos:
             id_estado (int): Identificador único del estado.
@@ -71,7 +80,7 @@ class Estado(Base):
     descripcion = Column(String(150))
 
     tareas = relationship("Tarea", back_populates="estado")
-
+# pylint: disable=too-few-public-methods
 class Etiqueta(Base):
     """
        Representa una etiqueta para categorizar tareas.
@@ -88,8 +97,10 @@ class Etiqueta(Base):
     nombre_etiqueta = Column(String(50), nullable=False)
     color = Column(String(20))
 
-    tareas = relationship("Tarea", secondary=tarea_etiqueta, back_populates="etiquetas")
-
+    tareas = relationship(
+        "Tarea", secondary=tarea_etiqueta, back_populates="etiquetas"
+    )
+# pylint: disable=too-few-public-methods
 class Tarea(Base):
     """
         Representa una tarea en el sistema.
@@ -120,9 +131,11 @@ class Tarea(Base):
 
     usuario = relationship("Usuario", back_populates="tareas")
     estado = relationship("Estado", back_populates="tareas")
-    etiquetas = relationship("Etiqueta", secondary=tarea_etiqueta, back_populates="tareas")
+    etiquetas = relationship(
+        "Etiqueta", secondary=tarea_etiqueta, back_populates="tareas"
+    )
     recordatorios = relationship("Recordatorio", back_populates="tarea")
-
+# pylint: disable=too-few-public-methods
 class Recordatorio(Base):
     """
         Representa un recordatorio asociado a una tarea.
@@ -142,5 +155,3 @@ class Recordatorio(Base):
     tipo = Column(String(50))
 
     tarea = relationship("Tarea", back_populates="recordatorios")
-
-

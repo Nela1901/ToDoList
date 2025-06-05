@@ -8,9 +8,9 @@ que acceden al sistema.
 Clases:
     UsuarioManager: Proporciona métodos CRUD para la entidad Usuario.
 """
-
-from src.modelo.modelo import Usuario
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from src.modelo.modelo import Usuario
+
 
 class UsuarioManager:
     """Gestiona las operaciones CRUD para la entidad Usuario."""
@@ -76,7 +76,10 @@ class UsuarioManager:
         """
         return self.session.query(Usuario).filter_by(id_usuario=id_usuario).first()
 
-    def actualizar_usuario(self, id_usuario, nombre_usuario=None, correo_electronico=None, contrasena=None):
+    def actualizar_usuario(
+            self, id_usuario, nombre_usuario=None,
+            correo_electronico=None, contrasena=None
+    ):
         """
         Actualiza los datos de un usuario dado.
 

@@ -38,7 +38,8 @@ class TestTareaManager(unittest.TestCase):
         # Crear datos relacionados necesarios
         self.usuario_manager = UsuarioManager(self.session)
         self.estado_manager = EstadoManager(self.session)
-        self.usuario = self.usuario_manager.crear_usuario("Usuario prueba", "test@correo.com", "1234")
+        self.usuario = self.usuario_manager.crear_usuario(
+            "Usuario prueba", "test@correo.com", "1234")
         self.estado = self.estado_manager.crear_estado("Pendiente", "Tarea pendiente")
 
     def tearDown(self):
@@ -55,8 +56,10 @@ class TestTareaManager(unittest.TestCase):
         tarea = self.tarea_manager.crear_tarea(
             "Tarea 1", "Descripción tarea 1",
             datetime.now(), datetime.now() + timedelta(days=1),
-            self.usuario.id_usuario, self.estado.id_estado
+            id_usuario=self.usuario.id_usuario,
+            id_estado=self.estado.id_estado
         )
+
         self.assertIsNotNone(tarea.id_tarea)
         self.assertEqual(tarea.titulo, "Tarea 1")
         self.assertEqual(tarea.descripcion, "Descripción tarea 1")
@@ -68,7 +71,8 @@ class TestTareaManager(unittest.TestCase):
         tarea = self.tarea_manager.crear_tarea(
             "Tarea 2", "Descripción tarea 2",
             datetime.now(), datetime.now() + timedelta(days=1),
-            self.usuario.id_usuario, self.estado.id_estado
+            id_usuario=self.usuario.id_usuario,
+            id_estado=self.estado.id_estado
         )
         tarea_leida = self.tarea_manager.obtener_tarea_por_id(tarea.id_tarea)
         self.assertEqual(tarea_leida.titulo, "Tarea 2")
@@ -81,7 +85,8 @@ class TestTareaManager(unittest.TestCase):
         tarea = self.tarea_manager.crear_tarea(
             "Tarea 3", "Descripción tarea 3",
             datetime.now(), datetime.now() + timedelta(days=1),
-            self.usuario.id_usuario, self.estado.id_estado
+            id_usuario=self.usuario.id_usuario,
+            id_estado=self.estado.id_estado
         )
         tarea_actualizada = self.tarea_manager.actualizar_tarea(
             tarea.id_tarea,
@@ -98,7 +103,8 @@ class TestTareaManager(unittest.TestCase):
         tarea = self.tarea_manager.crear_tarea(
             "Tarea 4", "Descripción tarea 4",
             datetime.now(), datetime.now() + timedelta(days=1),
-            self.usuario.id_usuario, self.estado.id_estado
+            id_usuario=self.usuario.id_usuario,
+            id_estado=self.estado.id_estado
         )
         eliminada = self.tarea_manager.eliminar_tarea(tarea.id_tarea)
         self.assertIsNone(self.tarea_manager.obtener_tarea_por_id(eliminada.id_tarea))

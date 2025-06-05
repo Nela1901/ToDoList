@@ -7,10 +7,10 @@ con datos de ejemplo para facilitar pruebas y desarrollo.
 Funciones:
     inicializar_tareas(): Borra registros existentes e inserta tareas predeterminadas.
 """
-
+from datetime import datetime
 from src.modelo.database import Session
 from src.modelo.modelo import Tarea
-from datetime import datetime
+
 
 def inicializar_tareas():
     """
