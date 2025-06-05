@@ -58,9 +58,9 @@ ToDoList/
 
 - Python 3.10 o superior.
 - Entorno virtual (recomendado).
+- DB Browser para SQLite
 - Paquetes necesarios:
   - SQLAlchemy
-  - DB Browser para SQLite
   - Otros paquetes especificados en `requirements.txt`.
 
 ## Instalación
@@ -73,12 +73,14 @@ ToDoList/
 
 ## Ejemplo de uso
 - Agregar tareas
+  ```
   from src.logica.tarea_manager import TareaManager
   gestor_tareas = TareaManager()
   gestor_tareas.crear_tarea("Hacer compras", "Comprar leche y pan", "2025-06-10")
-
+  ```
 ## Ramas
    Actualmente el repositorio usa como rama principal a main. Posteriormente se empleará ramas para la parte de las interfaces y luego fusionarlas mediante pull requests.
+   
 ## Integrantes del Proyecto
 
 | N° | Nombre completo                           |
