@@ -13,7 +13,8 @@ También gestiona usuarios, etiquetas y recordatorios.
 Este proyecto refleja las buenas prácticas de programación y busca ser una herramienta intuitiva 
 y útil para el manejo eficiente de actividades.
 
-##Estructura del proyecto
+## Estructura del proyecto
+
 ```
 ToDoList/
 ├── src/
