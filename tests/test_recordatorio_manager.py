@@ -33,30 +33,28 @@ class TestRecordatorioManager(unittest.TestCase):
         Configura la base de datos limpia y prepara la sesión y los managers,
         creando un usuario, estado y tarea para asociar los recordatorios.
         """
-
-        def setUp(self):
-            Base.metadata.drop_all(engine)
-            Base.metadata.create_all(engine)
-            self.session = Session()
-            self.recordatorio_manager = RecordatorioManager(self.session)
-            self.usuario_manager = UsuarioManager(self.session)
-            self.estado_manager = EstadoManager(self.session)
-            self.tarea_manager = TareaManager(self.session)
-
-            usuario = self.usuario_manager.crear_usuario(
-                "Usuario recordatorio", "recordatorio@correo.com", "123"
-            )
-            estado = self.estado_manager.crear_estado(
-                "Pendiente", "Tarea pendiente"
-            )
-            self.tarea = self.tarea_manager.crear_tarea(
-                "Tarea con recordatorio",
-                "Descripción",
-                datetime.now(),
-                datetime.now() + timedelta(days=1),
-                usuario.id_usuario,
-                estado.id_estado
-            )
+        Base.metadata.drop_all(engine)
+        Base.metadata.create_all(engine)
+        self.session = Session()
+        self.recordatorio_manager = RecordatorioManager(self.session)
+        self.usuario_manager = UsuarioManager(self.session)
+        self.estado_manager = EstadoManager(self.session)
+        self.tarea_manager = TareaManager(self.session)
+        ##usuario para la prueba
+        usuario = self.usuario_manager.crear_usuario(
+            "Usuario recordatorio", "recordatorio@correo.com", "123"
+        )
+        estado = self.estado_manager.crear_estado(
+            "Pendiente", "Tarea pendiente"
+        )
+        self.tarea = self.tarea_manager.crear_tarea(
+            "Tarea con recordatorio",
+            "Descripción",
+            datetime.now(),
+            datetime.now() + timedelta(days=1),
+            id_usuario=usuario.id_usuario,
+            id_estado=estado.id_estado
+        )
 
     def tearDown(self):
         """
