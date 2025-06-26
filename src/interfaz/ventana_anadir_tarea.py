@@ -1,4 +1,4 @@
-# src/interfaz/ventana_añadir_tarea.py
+# src/interfaz/ventana_anadir_tarea.py
 
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QLabel, QLineEdit, QDateEdit,
@@ -17,7 +17,7 @@ from src.interfaz.estilos import mostrar_mensaje
 from src.modelo.modelo import Etiqueta
 
 
-class VentanaAñadirTarea(QDialog):
+class VentanaAnadirTarea(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Añadir nueva tarea")

@@ -10,7 +10,7 @@ from functools import partial
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize
 from src.interfaz.ventana_crear_cuenta import VentanaCrearCuenta
-from src.interfaz.ventana_añadir_tarea import VentanaAñadirTarea
+from src.interfaz.ventana_anadir_tarea import VentanaAnadirTarea
 from src.interfaz.estilos import mostrar_mensaje
 from src.modelo.database import Session
 from src.logica.tarea_manager import TareaManager
@@ -204,7 +204,7 @@ class VentanaPrincipal(QMainWindow):
             self.tabla_tareas.setCellWidget(fila, 5, contenedor_botones)
 
     def abrir_ventana_añadir_tarea(self):
-        ventana = VentanaAñadirTarea(self)
+        ventana = VentanaAnadirTarea(self)
         if ventana.exec():
             self.cargar_tareas()
 
