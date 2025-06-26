@@ -10,9 +10,9 @@ Clases:
 """
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from src.modelo.modelo import Tarea, Estado
 from sqlalchemy.orm import joinedload
 
+from src.modelo.modelo import Tarea, Estado
 
 class TareaManager:
     """Gestiona las operaciones CRUD para la entidad Tarea."""
@@ -118,6 +118,7 @@ class TareaManager:
             return None
 
     def eliminar_tarea(self, tarea):
+        """Elimina una tarea existente de la base de datos."""
         self.session.delete(tarea)
         self.session.commit()
 
@@ -134,6 +135,7 @@ class TareaManager:
         return self.session.query(Tarea).filter_by(id_tarea=id_tarea).first()
 
     def obtener_tareas_por_usuario(self, id_usuario: int):
+        """Obtiene todas las tareas asociadas a un usuario."""
         return (
             self.session.query(Tarea)
             .options(joinedload(Tarea.etiquetas))
@@ -142,6 +144,7 @@ class TareaManager:
         )
 
     def marcar_completado(self, tarea):
+        """Marca una tarea como completada actualizando su estado."""
         estado_completado = self.session.query(Estado).filter_by(nombre_estado="Completado").first()
         if not estado_completado:
             estado_completado = Estado(nombre_estado="Completado")

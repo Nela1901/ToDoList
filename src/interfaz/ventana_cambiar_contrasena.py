@@ -1,3 +1,10 @@
+"""Ventana para cambiar la contraseña del usuario."""
+
+# pylint: disable=no-name-in-module, too-few-public-methods, missing-function-docstring
+# Las advertencias no-name-in-module son falsos positivos comunes con PySide6.
+# too-few-public-methods es aceptable en clases de UI con lógica encapsulada.
+# missing-function-docstring omitido para mantener el código limpio y legible.
+# pylint: disable=duplicate-code
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
 )
@@ -10,6 +17,8 @@ from src.interfaz.estilos import mostrar_mensaje
 
 
 class VentanaCambiarContrasena(QDialog):
+    """Ventana que permite al usuario cambiar su contraseña."""
+
     def __init__(self, usuario, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Cambiar Contraseña")
@@ -29,28 +38,24 @@ class VentanaCambiarContrasena(QDialog):
         titulo.setStyleSheet("color: #060606; padding: 10px;")
         layout.addWidget(titulo)
 
-        # Contraseña actual
         self.input_actual = QLineEdit()
         self.input_actual.setPlaceholderText("Contraseña actual")
         self.input_actual.setEchoMode(QLineEdit.Password)
         self.input_actual.setStyleSheet(self._estilo_input())
         layout.addWidget(self.input_actual)
 
-        # Nueva contraseña
         self.input_nueva = QLineEdit()
         self.input_nueva.setPlaceholderText("Nueva contraseña")
         self.input_nueva.setEchoMode(QLineEdit.Password)
         self.input_nueva.setStyleSheet(self._estilo_input())
         layout.addWidget(self.input_nueva)
 
-        # Confirmar nueva
         self.input_confirmar = QLineEdit()
         self.input_confirmar.setPlaceholderText("Confirmar nueva contraseña")
         self.input_confirmar.setEchoMode(QLineEdit.Password)
         self.input_confirmar.setStyleSheet(self._estilo_input())
         layout.addWidget(self.input_confirmar)
 
-        # Botón actualizar
         boton_actualizar = QPushButton("Actualizar contraseña")
         boton_actualizar.setStyleSheet(self._estilo_boton())
         boton_actualizar.clicked.connect(self.actualizar_contrasena)
@@ -94,18 +99,22 @@ class VentanaCambiarContrasena(QDialog):
         confirmar = self.input_confirmar.text()
 
         if actual != self.usuario.contrasena:
-            mostrar_mensaje(self, "Error", "La contraseña actual no es correcta.", tipo="error")
+            mostrar_mensaje(self, "Error", "La contraseña actual no es correcta.",
+                            tipo="error")
             return
         if not nueva or not confirmar:
-            mostrar_mensaje(self, "Campos vacíos", "Todos los campos son obligatorios.", tipo="advertencia")
+            mostrar_mensaje(self, "Campos vacíos", "Todos los campos son obligatorios."
+                            , tipo="advertencia")
             return
         if nueva != confirmar:
-            mostrar_mensaje(self, "Error", "Las nuevas contraseñas no coinciden.", tipo="error")
+            mostrar_mensaje(self, "Error", "Las nuevas contraseñas no coinciden.",
+                            tipo="error")
             return
 
         usuario_bd = self.session.query(Usuario).get(self.usuario.id_usuario)
         usuario_bd.contrasena = nueva
         self.session.commit()
 
-        mostrar_mensaje(self, "Éxito", "Contraseña actualizada correctamente.", tipo="info")
+        mostrar_mensaje(self, "Éxito", "Contraseña actualizada correctamente.",
+                        tipo="info")
         self.accept()
