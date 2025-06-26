@@ -10,7 +10,9 @@ Clases:
 """
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from src.modelo.modelo import Tarea
+from src.modelo.modelo import Tarea, Estado
+from sqlalchemy.orm import joinedload
+
 
 class TareaManager:
     """Gestiona las operaciones CRUD para la entidad Tarea."""
@@ -73,17 +75,6 @@ class TareaManager:
         """
         return self.session.query(Tarea).all()
 
-    def obtener_tarea_por_id(self, id_tarea):
-        """
-        Obtiene una tarea específica por su ID.
-
-        Args:
-            id_tarea (int): Identificador único de la tarea.
-
-        Returns:
-            Tarea: Instancia de Tarea si se encuentra, de lo contrario None.
-        """
-        return self.session.query(Tarea).filter_by(id_tarea=id_tarea).first()
 
     def actualizar_tarea(self, id_tarea, **kwargs):
         """
@@ -126,30 +117,37 @@ class TareaManager:
             )
             return None
 
-    def eliminar_tarea(self, id_tarea):
+    def eliminar_tarea(self, tarea):
+        self.session.delete(tarea)
+        self.session.commit()
+
+    def obtener_tarea_por_id(self, id_tarea):
         """
-        Elimina una tarea por su ID.
+        Obtiene una tarea específica por su ID.
 
         Args:
-            id_tarea (int): ID de la tarea a eliminar.
+            id_tarea (int): Identificador único de la tarea.
 
         Returns:
-            Tarea: Instancia eliminada si la operación fue exitosa.
-            None: Si la tarea no existe o ocurre un error.
+            Tarea: Instancia de Tarea si se encuentra, de lo contrario None.
         """
-        tarea = self.obtener_tarea_por_id(id_tarea)
-        if not tarea:
-            print(
-                "Tarea no encontrada para eliminar."
-            )
-            return None
-        try:
-            self.session.delete(tarea)
+        return self.session.query(Tarea).filter_by(id_tarea=id_tarea).first()
+
+    def obtener_tareas_por_usuario(self, id_usuario: int):
+        return (
+            self.session.query(Tarea)
+            .options(joinedload(Tarea.etiquetas))
+            .filter_by(id_usuario=id_usuario)
+            .all()
+        )
+
+    def marcar_completado(self, tarea):
+        estado_completado = self.session.query(Estado).filter_by(nombre_estado="Completado").first()
+        if not estado_completado:
+            estado_completado = Estado(nombre_estado="Completado")
+            self.session.add(estado_completado)
             self.session.commit()
-            return tarea
-        except SQLAlchemyError as e:
-            self.session.rollback()
-            print(
-                f"Error inesperado al eliminar tarea: {e}"
-            )
-            return None
+
+        if tarea.id_estado != estado_completado.id_estado:
+            tarea.id_estado = estado_completado.id_estado
+            self.session.commit()

@@ -17,7 +17,7 @@ import src.utilidades.inicializador_usuarios as usuario
 import src.utilidades.inicializador_estados as estado
 import src.utilidades.inicializador_etiqueta as etiqueta
 import src.utilidades.inicializador_tareas as tarea
-import src.utilidades.inicializador_recordatorio as recordatorio
+
 
 def main():
     """
@@ -29,7 +29,7 @@ def main():
     estado.inicializar_estados()
     etiqueta.inicializar_etiquetas()
     tarea.inicializar_tareas()
-    recordatorio.inicializar_recordatorios()
+
 
     print("¡Base de datos lista y con datos iniciales!")
 

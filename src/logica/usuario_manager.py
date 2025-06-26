@@ -138,3 +138,15 @@ class UsuarioManager:
             self.session.rollback()
             print(f"Error inesperado al eliminar: {e}")
             return None
+
+    def obtener_por_nombre(self, nombre_usuario):
+        """
+        Obtiene un usuario por su nombre de usuario.
+
+        Args:
+            nombre_usuario (str): Nombre de usuario a buscar.
+
+        Returns:
+            Usuario: Instancia de Usuario si se encuentra, de lo contrario None.
+        """
+        return self.session.query(Usuario).filter_by(nombre_usuario=nombre_usuario).first()

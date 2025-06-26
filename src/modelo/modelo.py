@@ -116,7 +116,6 @@ class Tarea(Base):
             usuario (Usuario): Relación con el usuario propietario.
             estado (Estado): Relación con el estado de la tarea.
             etiquetas (list[Etiqueta]): Lista de etiquetas asociadas a la tarea.
-            recordatorios (list[Recordatorio]): Lista de recordatorios de la tarea.
         """
     __tablename__ = 'tarea'
 
@@ -126,32 +125,11 @@ class Tarea(Base):
     fecha_creacion = Column(DateTime)
     fecha_vencimiento = Column(DateTime)
 
-    id_estado = Column(Integer, ForeignKey('estado.id_estado'), index=True)
-    id_usuario = Column(Integer, ForeignKey('usuario.id_usuario'), index=True)
+    id_estado = Column(Integer, ForeignKey('estado.id_estado'), index=True, nullable=False)
+    id_usuario = Column(Integer, ForeignKey('usuario.id_usuario'), index=True, nullable=False)
 
     usuario = relationship("Usuario", back_populates="tareas")
     estado = relationship("Estado", back_populates="tareas")
     etiquetas = relationship(
         "Etiqueta", secondary=tarea_etiqueta, back_populates="tareas"
     )
-    recordatorios = relationship("Recordatorio", back_populates="tarea")
-# pylint: disable=too-few-public-methods
-class Recordatorio(Base):
-    """
-        Representa un recordatorio asociado a una tarea.
-
-        Atributos:
-            id_recordatorio (int): Identificador único del recordatorio.
-            id_tarea (int): Identificador de la tarea asociada.
-            fecha_hora (datetime): Fecha y hora del recordatorio.
-            tipo (str): Tipo de recordatorio (por ejemplo, Email, Notificación).
-            tarea (Tarea): Relación con la tarea asociada.
-        """
-    __tablename__ = 'recordatorio'
-
-    id_recordatorio = Column(Integer, primary_key=True, autoincrement=True)
-    id_tarea = Column(Integer, ForeignKey('tarea.id_tarea'))
-    fecha_hora = Column(DateTime)
-    tipo = Column(String(50))
-
-    tarea = relationship("Tarea", back_populates="recordatorios")
