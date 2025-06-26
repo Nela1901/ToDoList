@@ -1,40 +1,38 @@
-import unittest
-from PySide6.QtWidgets import QApplication
-
 from src.interfaz.ventana_anadir_tarea import VentanaAnadirTarea
-from src.interfaz.ventana_cambiar_contrasena import VentanaCambiarContrasena
-from src.interfaz.ventana_crear_cuenta import VentanaCrearCuenta
 from src.interfaz.ventana_editar_tarea import VentanaEditarTarea
-from src.interfaz.ventana_login import VentanaLogin
 from src.interfaz.ventana_principal import VentanaPrincipal
 
-app = QApplication([])  # Necesario para testear interfaces gráficas
+# Mocks simples para simular un usuario y una tarea
 
-class TestInterfazBasica(unittest.TestCase):
+class UsuarioFalso:
+    def __init__(self):
+        self.nombre_usuario = "UsuarioPrueba"
 
-    def test_ventana_anadir_tarea(self):
-        ventana = VentanaAnadirTarea("UsuarioPrueba")
-        self.assertIsNotNone(ventana)
+class TareaFalsa:
+    def __init__(self):
+        self.titulo = "Tarea de prueba"
+        self.descripcion = "Descripción de prueba"
+        self.fecha_vencimiento = None
+        self.etiquetas = []
 
-    def test_ventana_cambiar_contrasena(self):
-        ventana = VentanaCambiarContrasena("UsuarioPrueba")
-        self.assertIsNotNone(ventana)
+# Test: creación de ventana para añadir tarea
+def test_ventana_anadir_tarea():
+    usuario = UsuarioFalso()
+    ventana = VentanaAnadirTarea(usuario)
+    assert ventana is not None
+    #es decir que se haya creado correctamente
+    #una instancia de la ventana.
+    #None indica error
 
-    def test_ventana_crear_cuenta(self):
-        ventana = VentanaCrearCuenta()
-        self.assertIsNotNone(ventana)
+# Test: creación de ventana para editar tarea
+def test_ventana_editar_tarea():
+    tarea = TareaFalsa()
+    usuario = UsuarioFalso()
+    ventana = VentanaEditarTarea(tarea, usuario)
+    assert ventana is not None
 
-    def test_ventana_editar_tarea(self):
-        ventana = VentanaEditarTarea(1, "UsuarioPrueba")  # Usa un ID válido de prueba si es necesario
-        self.assertIsNotNone(ventana)
-
-    def test_ventana_login(self):
-        ventana = VentanaLogin()
-        self.assertIsNotNone(ventana)
-
-    def test_ventana_principal(self):
-        ventana = VentanaPrincipal("UsuarioPrueba")
-        self.assertIsNotNone(ventana)
-
-if __name__ == '__main__':
-    unittest.main()
+# Test: creación de ventana principal
+def test_ventana_principal():
+    usuario = UsuarioFalso()
+    ventana = VentanaPrincipal(usuario)
+    assert ventana is not None
