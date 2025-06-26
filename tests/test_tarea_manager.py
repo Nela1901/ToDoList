@@ -106,8 +106,9 @@ class TestTareaManager(unittest.TestCase):
             id_usuario=self.usuario.id_usuario,
             id_estado=self.estado.id_estado
         )
-        eliminada = self.tarea_manager.eliminar_tarea(tarea.id_tarea)
-        self.assertIsNone(self.tarea_manager.obtener_tarea_por_id(eliminada.id_tarea))
+        self.tarea_manager.eliminar_tarea(tarea)  # <-- pasamos la instancia, no el ID
+        self.assertIsNone(self.tarea_manager.obtener_tarea_por_id(tarea.id_tarea))  # Verificamos que fue eliminada
+
 
 if __name__ == "__main__":
     unittest.main()
