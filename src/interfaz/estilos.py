@@ -1,12 +1,29 @@
-from PySide6.QtWidgets import QMessageBox
+"""
+Módulo de estilos y utilidades para mensajes emergentes (QMessageBox) personalizados.
+"""
+
+from PySide6.QtWidgets import QMessageBox  # pylint: disable=no-name-in-module
 
 def mostrar_mensaje(parent, titulo, texto, tipo="info", botones=QMessageBox.Ok):
+    """
+    Muestra un cuadro de mensaje con estilo pastel personalizado.
+
+    Parámetros:
+        parent (QWidget): Componente padre del mensaje.
+        titulo (str): Título de la ventana del mensaje.
+        texto (str): Texto que se mostrará dentro del mensaje.
+        tipo (str): Tipo de mensaje: 'info', 'advertencia', 'error', 'pregunta'.
+        botones (QMessageBox.StandardButtons): Botones que se mostrarán.
+
+    Retorna:
+        int: Código del botón presionado.
+    """
     msg = QMessageBox(parent)
     msg.setWindowTitle(titulo)
     msg.setText(texto)
     msg.setStandardButtons(botones)
 
-    # Íconos
+    # Íconos según el tipo
     if tipo == "info":
         msg.setIcon(QMessageBox.Information)
     elif tipo == "advertencia":

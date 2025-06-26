@@ -1,3 +1,5 @@
+"""Módulo que contiene la ventana de login para la aplicación ToDoList."""
+# pylint: disable=duplicate-code
 import sys
 import os
 from PySide6.QtWidgets import (
@@ -9,9 +11,12 @@ from PySide6.QtCore import Qt
 
 from src.modelo.database import Session
 from src.logica.usuario_manager import UsuarioManager
-from src.interfaz.estilos import mostrar_mensaje  # ← Sigue igual
+from src.interfaz.estilos import mostrar_mensaje
+
 
 class VentanaLogin(QDialog):
+    """Ventana de inicio de sesión para que el usuario acceda a la aplicación."""
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Iniciar Sesión - ToDoList")
@@ -26,6 +31,7 @@ class VentanaLogin(QDialog):
         self.init_ui()
 
     def init_ui(self):
+        """Inicializa y configura los componentes gráficos de la ventana de login."""
         layout = QVBoxLayout()
 
         # LOGO
@@ -87,21 +93,37 @@ class VentanaLogin(QDialog):
         self.setLayout(layout)
 
     def iniciar_sesion(self):
+        """Valida las credenciales del usuario y permite el acceso si son correctas."""
         nombre_usuario = self.input_usuario.text().strip()
         contrasena = self.input_contrasena.text().strip()
 
         if not nombre_usuario or not contrasena:
-            mostrar_mensaje(self, "Campos vacíos", "Por favor, completa todos los campos.", tipo="advertencia")
+            mostrar_mensaje(
+                self,
+                "Campos vacíos",
+                "Por favor, completa todos los campos.",
+                tipo="advertencia"
+            )
             return
 
         usuario = self.usuario_manager.obtener_por_nombre(nombre_usuario)
 
         if usuario and usuario.contrasena == contrasena:
-            mostrar_mensaje(self, "Acceso permitido", f"¡Bienvenido {nombre_usuario}!", tipo="info")
+            mostrar_mensaje(
+                self,
+                "Acceso permitido",
+                f"¡Bienvenido {nombre_usuario}!",
+                tipo="info"
+            )
             self.usuario = usuario
-            self.accept()  # ← importante para que app.py sepa que el login fue exitoso
+            self.accept()
         else:
-            mostrar_mensaje(self, "Error de inicio de sesión", "Usuario o contraseña incorrectos.", tipo="error")
+            mostrar_mensaje(
+                self,
+                "Error de inicio de sesión",
+                "Usuario o contraseña incorrectos.",
+                tipo="error"
+            )
 
 
 if __name__ == "__main__":

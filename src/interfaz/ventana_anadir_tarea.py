@@ -1,23 +1,23 @@
-# src/interfaz/ventana_añadir_tarea.py
+"""Ventana de diálogo para añadir una nueva tarea con título, descripción, fecha y etiquetas."""
+# pylint: disable=no-name-in-module, non-ascii-name
+# pylint: disable=duplicate-code
+from datetime import datetime
 
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QLabel, QLineEdit, QDateEdit,
-    QPushButton
+    QPushButton, QListWidget, QListWidgetItem
 )
+from PySide6.QtCore import Qt, QDate
 
-from PySide6.QtWidgets import QListWidget, QListWidgetItem
-from PySide6.QtCore import Qt
-
-from PySide6.QtCore import QDate
-from datetime import datetime
 from src.logica.tarea_manager import TareaManager
 from src.modelo.database import Session
-from src.modelo.modelo import Estado
+from src.modelo.modelo import Estado, Etiqueta
 from src.interfaz.estilos import mostrar_mensaje
-from src.modelo.modelo import Etiqueta
 
 
-class VentanaAñadirTarea(QDialog):
+class VentanaAnadirTarea(QDialog):
+    """Ventana de diálogo para registrar una nueva tarea."""
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Añadir nueva tarea")
@@ -29,6 +29,7 @@ class VentanaAñadirTarea(QDialog):
         self._configurar_ui()
 
     def _configurar_ui(self):
+        """Configura la interfaz gráfica de la ventana."""
         layout = QVBoxLayout()
         layout.setSpacing(12)
 
@@ -58,13 +59,14 @@ class VentanaAñadirTarea(QDialog):
         self.lista_etiquetas = QListWidget()
         self.lista_etiquetas.setSelectionMode(QListWidget.MultiSelection)
         self.lista_etiquetas.setStyleSheet("""
-                    font-family: 'Segoe UI';
-                    font-size: 13px;
-                    background-color: #ffffff;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                """)
-        # Botón
+            font-family: 'Segoe UI';
+            font-size: 13px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        """)
+
+        # Botón guardar
         self.boton_guardar = QPushButton("Guardar tarea")
         self.boton_guardar.setStyleSheet(self._estilo_boton())
         self.boton_guardar.clicked.connect(self.guardar_tarea)
@@ -85,6 +87,7 @@ class VentanaAñadirTarea(QDialog):
         self.cargar_etiquetas()
 
     def _estilo_input(self):
+        """Devuelve el estilo aplicado a los campos de entrada."""
         return """
             QLineEdit, QDateEdit {
                 font-family: 'Segoe UI';
@@ -97,6 +100,7 @@ class VentanaAñadirTarea(QDialog):
         """
 
     def _estilo_boton(self):
+        """Devuelve el estilo aplicado al botón de guardar."""
         return """
             QPushButton {
                 font-family: 'Segoe UI';
@@ -114,6 +118,7 @@ class VentanaAñadirTarea(QDialog):
         """
 
     def guardar_tarea(self):
+        """Guarda la tarea con los datos ingresados y etiquetas seleccionadas."""
         titulo = self.titulo_input.text().strip()
         descripcion = self.descripcion_input.text().strip()
         fecha_vencimiento_qdate = self.fecha_input.date()
@@ -125,16 +130,31 @@ class VentanaAñadirTarea(QDialog):
         fecha_creacion = datetime.now()
 
         if not titulo:
-            mostrar_mensaje(self, "Campos incompletos", "El título no puede estar vacío.", tipo="advertencia")
+            mostrar_mensaje(
+                self,
+                "Campos incompletos",
+                "El título no puede estar vacío.",
+                tipo="advertencia"
+            )
             return
 
         if fecha_vencimiento < fecha_creacion:
-            mostrar_mensaje(self, "Fecha inválida", "La fecha de vencimiento no puede ser anterior a hoy.", tipo="advertencia")
+            mostrar_mensaje(
+                self,
+                "Fecha inválida",
+                "La fecha de vencimiento no puede ser anterior a hoy.",
+                tipo="advertencia"
+            )
             return
 
         estado_pendiente = self.session.query(Estado).filter_by(nombre_estado="Pendiente").first()
         if not estado_pendiente:
-            mostrar_mensaje(self, "Error", "No se encontró el estado 'Pendiente'.", tipo="error")
+            mostrar_mensaje(
+                self,
+                "Error",
+                "No se encontró el estado 'Pendiente'.",
+                tipo="error"
+            )
             return
 
         # Obtener ID del usuario logueado desde el parent
@@ -143,6 +163,7 @@ class VentanaAñadirTarea(QDialog):
         etiquetas_seleccionadas = [
             item.data(Qt.UserRole) for item in self.lista_etiquetas.selectedItems()
         ]
+
         tarea = self.tarea_manager.crear_tarea(
             titulo=titulo,
             descripcion=descripcion,
@@ -154,12 +175,23 @@ class VentanaAñadirTarea(QDialog):
         )
 
         if tarea:
-            mostrar_mensaje(self, "Tarea guardada", "La tarea se ha guardado correctamente.", tipo="info")
+            mostrar_mensaje(
+                self,
+                "Tarea guardada",
+                "La tarea se ha guardado correctamente.",
+                tipo="info"
+            )
             self.accept()
         else:
-            mostrar_mensaje(self, "Error", "Ocurrió un error al guardar la tarea.", tipo="error")
+            mostrar_mensaje(
+                self,
+                "Error",
+                "Ocurrió un error al guardar la tarea.",
+                tipo="error"
+            )
 
     def cargar_etiquetas(self):
+        """Carga las etiquetas disponibles desde la base de datos."""
         etiquetas = self.session.query(Etiqueta).all()
         for etiqueta in etiquetas:
             item = QListWidgetItem(etiqueta.nombre_etiqueta)

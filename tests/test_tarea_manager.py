@@ -107,7 +107,8 @@ class TestTareaManager(unittest.TestCase):
             id_estado=self.estado.id_estado
         )
         self.tarea_manager.eliminar_tarea(tarea)  # <-- pasamos la instancia, no el ID
-        self.assertIsNone(self.tarea_manager.obtener_tarea_por_id(tarea.id_tarea))  # Verificamos que fue eliminada
+        self.assertIsNone(self.tarea_manager.obtener_tarea_por_id(tarea.id_tarea))
+        # Verificamos que fue eliminada
 
 
 if __name__ == "__main__":
