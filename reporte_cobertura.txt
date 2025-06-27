@@ -1,0 +1,18 @@
+Name                             Stmts   Miss  Cover
+----------------------------------------------------
+src\__init__.py                      0      0   100%
+src\logica\__init__.py               0      0   100%
+src\logica\estado_manager.py        63     25    60%
+src\logica\etiqueta_manager.py      56     24    57%
+src\logica\tarea_manager.py         56     28    50%
+src\logica\usuario_manager.py       60     26    57%
+src\modelo\__init__.py               0      0   100%
+src\modelo\database.py               7      0   100%
+src\modelo\declarative_base.py       2      0   100%
+src\modelo\modelo.py                35      0   100%
+tests\test_estado_manager.py        44      1    98%
+tests\test_etiqueta_manager.py      41      1    98%
+tests\test_tarea_manager.py         40      1    98%
+tests\test_usuario_manager.py       36      1    97%
+----------------------------------------------------
+TOTAL                              440    107    76%

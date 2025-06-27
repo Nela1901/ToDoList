@@ -34,6 +34,17 @@ def mostrar_mensaje(parent, titulo, texto, tipo="info", botones=QMessageBox.Ok):
         msg.setIcon(QMessageBox.Question)
 
     # Estilo pastel moderno
+    # es un metodo que permite aplicar
+    #  estilos visuales
+    #  (como colores, bordes, fuentes) a
+    #  los componentes de la interfaz en PySide6
+    #  usando código similar a CSS (hojas de estilo).
+
+    # setStyleSheet:Le pasa una cadena con estilos
+    # en formato CSS para modificar su apariencia.
+
+    # msg: es un objeto como
+    # QMessageBox, QLabel, QPushButton
     msg.setStyleSheet("""
         QMessageBox {
             background-color: #F4FBFF;

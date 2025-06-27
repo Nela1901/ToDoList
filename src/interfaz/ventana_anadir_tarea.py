@@ -20,10 +20,18 @@ class VentanaAnadirTarea(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        # setWindowTitle: establece el texto que
+        # aparece como título en la barra superior
+        # de la ventana.
         self.setWindowTitle("Añadir nueva tarea")
         self.setMinimumSize(400, 350)
-
+        # sirve para crear una sesión de base de datos
+        # para poder consultar, insertar o
+        # modificar datos con SQLAlchemy.
         self.session = Session()
+        # Crea una instancia del gestor de tareas y le
+        # pasa la sesión para que pueda interactuar con
+        # la base de datos.
         self.tarea_manager = TareaManager(self.session)
 
         self._configurar_ui()
