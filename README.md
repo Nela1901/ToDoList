@@ -18,6 +18,17 @@ y útil para el manejo eficiente de actividades.
 ```
 ToDoList/
 ├── src/
+│ ├── interfaz/
+│ │ │ ├── img
+│ │ │ │ ├── logo.png
+│ │ │ ├── app.py
+│ │ │ ├── estilos.py
+│ │ │ ├── ventana_anadir_tarea.py
+│ │ │ ├── ventana_cambiar_contrasena.py
+│ │ │ ├── ventana_crear_cuenta.py
+│ │ │ ├── ventana_editar_tarea.py
+│ │ │ ├── ventana_login.py
+│ │ │ ├── ventana_principal.py
 │ ├── logica/
 │ │ ├── estado_manager.py
 │ │ ├── etiqueta_manager.py
@@ -48,9 +59,10 @@ ToDoList/
 │ ├── test_tarea_manager.py
 │ ├── test_usuario_manager.py
 │ └── init.py
-├── app.py
-├── gui.py
+├── coverage
+├── pylintrc.py
 ├── main.py
+├── ProyectoFindeCursoG101.pdf
 ├── requirements.txt
 ├── .gitignore
 └── tasks.db
