@@ -6,6 +6,7 @@ de estados, validando tanto casos válidos como inválidos.
 """
 
 import unittest
+from unittest.mock import patch
 from src.logica.estado_manager import EstadoManager
 from src.modelo.database import Session, Base, engine
 
@@ -102,6 +103,59 @@ class TestEstadoManager(unittest.TestCase):
         eliminado = self.manager.eliminar_estado(estado.id_estado)
         self.assertIsNotNone(eliminado)
         self.assertIsNone(self.manager.obtener_estado_por_id(eliminado.id_estado))
+
+    def test_obtener_estado_inexistente(self):
+        """
+        Prueba que obtener un estado inexistente devuelve None.
+        """
+        estado = self.manager.obtener_estado_por_id(999)
+        self.assertIsNone(estado)
+
+    def test_actualizar_estado_inexistente(self):
+        """
+        Prueba que actualizar un estado inexistente devuelve None.
+        """
+        estado_actualizado = self.manager.actualizar_estado(
+            id_estado=999,
+            nombre_estado="Completado",
+            descripcion="Estado ficticio"
+        )
+        self.assertIsNone(estado_actualizado)
+
+    def test_eliminar_estado_inexistente(self):
+        """
+        Prueba que eliminar un estado inexistente devuelve None.
+        """
+        eliminado = self.manager.eliminar_estado(999)
+        self.assertIsNone(eliminado)
+
+    def test_crear_estado_nombre_vacio(self):
+        """
+        Prueba que se lanza ValueError si el nombre del estado está vacío.
+        """
+        estado = self.manager.crear_estado("", "Descripción cualquiera")
+        self.assertIsNone(estado)
+
+    def test_actualizar_estado_sin_nombre(self):
+        """
+        Prueba que lanzar ValueError si se intenta actualizar con nombre vacío.
+        """
+        estado = self.manager.crear_estado("Pendiente", "Estado base")
+        actualizado = self.manager.actualizar_estado(estado.id_estado, nombre_estado="", descripcion="Intento inválido")
+        self.assertIsNotNone(actualizado)
+        self.assertEqual(actualizado.nombre_estado, "Pendiente")  # No cambió
+        self.assertEqual(actualizado.descripcion, "Intento inválido")  # Sí cambió
+
+    def test_actualizar_estado_inexistente_imprime_mensaje(self):
+        with patch("builtins.print") as mocked_print:
+            self.manager.actualizar_estado(9999, "Nuevo Nombre")
+            mocked_print.assert_called_with("Estado no encontrado para actualizar.")
+
+    def test_eliminar_estado_inexistente_imprime_mensaje(self):
+        with patch("builtins.print") as mocked_print:
+            self.manager.eliminar_estado(9999)
+            mocked_print.assert_called_with("Estado no encontrado para eliminar.")
+
 
 if __name__ == "__main__":
     unittest.main()

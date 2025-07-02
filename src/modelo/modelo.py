@@ -94,7 +94,7 @@ class Etiqueta(Base):
     __tablename__ = 'etiqueta'
 
     id_etiqueta = Column(Integer, primary_key=True, autoincrement=True)
-    nombre_etiqueta = Column(String(50), nullable=False)
+    nombre_etiqueta = Column(String(50), nullable=False, unique=True)
     color = Column(String(20))
 
     tareas = relationship(
